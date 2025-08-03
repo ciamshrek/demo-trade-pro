@@ -1,0 +1,24 @@
+# This is a simple docker instance
+# for local development only. Do not
+# hard-code credentials in prod
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: stock_user
+      POSTGRES_PASSWORD: stock_pass
+      POSTGRES_DB: stock_db
+      POSTGRES_HOST_AUTH_METHOD: scram-sha-256
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata_stock:/var/lib/postgresql/data
+    # Add healthcheck to ensure database is ready
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U stock_user -d stock_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+volumes:
+  pgdata_stock:

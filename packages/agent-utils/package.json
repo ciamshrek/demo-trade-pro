@@ -1,0 +1,28 @@
+{
+  "name": "@workspace/agent-utils",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./tools/get-portfolio": "./src/tools/get-portfolio/tool.ts",
+    "./tools/get-portfolio-history": "./src/tools/get-portfolio-history/tool.ts",
+    "./tools/get-stock-price": "./src/tools/get-stock-price/tool.ts",
+    "./tools/get-stock-info": "./src/tools/get-stock-info/tool.ts",
+    "./tools/search-stocks": "./src/tools/search-stocks/tool.ts",
+    "./tools/get-order-history": "./src/tools/get-order-history/tool.ts",
+    "./tools/get-order-status": "./src/tools/get-order-status/tool.ts",
+    "./tools/create-order": "./src/tools/create-order/tool.ts",
+    "./tools/cancel-order": "./src/tools/cancel-order/tool.ts"
+  },
+  "dependencies": {
+    "ai": "^5.0.0",
+    "zod": "^3.25.0",
+    "zod-to-json-schema": "^3.22.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0"
+  }
+}
