@@ -9,6 +9,9 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 AUTH0_AGENT_DIR="$(dirname "$SCRIPT_DIR")"
 TFVARS_FILE="$AUTH0_AGENT_DIR/terraform/terraform.tfvars"
 
+# Source shared configuration
+source "$AUTH0_AGENT_DIR/config.sh"
+
 APP_NAME="${1:-StockTrade-Terraform}"
 
 command -v auth0 >/dev/null 2>&1 || { echo >&2 "Auth0 CLI not installed"; exit 1; }
@@ -107,10 +110,11 @@ auth0_client_secret = "$CLIENT_SECRET"
 project_name        = "StockTrade"
 
 # Application URLs
-agent_base_url        = "http://localhost:3003"
-agent_callback_url    = "http://localhost:3003/auth/callback"
-api_base_url        = "http://localhost:3001"
-api_identifier      = "https://api.stocktrade.example"
+agent_base_url           = "$AGENT_BASE_URL"
+agent_callback_url       = "$AGENT_CALLBACK_URL"
+mcp_resource_identifier  = "$AGENT_MCP_RESOURCE_IDENTIFIER"
+api_base_url             = "http://localhost:3001"
+api_identifier           = "https://api.stocktrade.example"
 EOF
 
 echo "✅ Setup complete!"

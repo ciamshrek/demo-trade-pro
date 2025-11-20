@@ -2,6 +2,12 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+Ensure you have Redis for MCP session management with the Vercel mcp-handler:
+
+```
+docker run -d --name demo-trade-redis -p 6379:6379 redis:7-alpine
+```
+
 First, run the development server:
 
 ```bash

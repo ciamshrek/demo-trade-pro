@@ -11,6 +11,9 @@ echo "======================================="
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$SCRIPT_DIR"
 
+# Source shared configuration
+source "$SCRIPT_DIR/config.sh"
+
 echo ""
 echo "Step 1: Generate Auth0 Management Client..."
 echo "-------------------------------------------"
@@ -21,12 +24,12 @@ echo ""
 echo "Step 2: Initialize Terraform..."
 echo "------------------------------"
 cd ../terraform
-terraform init
+terraform init -upgrade
 
 echo ""
 echo "Step 3: Apply Terraform Configuration..."
 echo "---------------------------------------"
-terraform apply -auto-approve
+terraform apply -auto-approve -parallelism=1
 
 echo ""
 echo "Step 4: Generate Agent Environment File..."
@@ -43,7 +46,7 @@ echo "=========================================="
 echo ""
 echo "Next Steps:"
 echo "1. Start the agent app: cd ../apps/agent && pnpm dev"
-echo "2. Visit http://localhost:3003 to test agent authentication"
+echo "2. Visit $AGENT_BASE_URL to test agent authentication"
 echo "3. Agent will connect to upstream DemoTradePro API (root tenant)"
 echo ""
 echo "📝 To make changes to Auth0 config, edit the .tf files and run:"

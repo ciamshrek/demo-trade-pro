@@ -9,11 +9,13 @@ Learn how to build AI agents that securely interact with APIs using proper authe
 **Workshop Documentation:** [workshop.auth101.dev](https://workshop.auth101.dev)
 
 Complete step-by-step guide including:
+
 - Local setup and Auth0 configuration
 - Building AI agents with public tools
 - Adding authentication and user identity
 - Secure token delegation with Auth0 Token Vault
 - Model Context Protocol integration
+- Keep humans in the loop with Auth0 Async Auth
 
 ## 📋 Prerequisites
 

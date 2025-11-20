@@ -1,8 +1,7 @@
-import { z } from 'zod'
-import { tool } from 'ai'
-import { zodToJsonSchema } from 'zod-to-json-schema'
-import type { DemoTradeProAPIClient } from '../../utils/api-client'
-import type { Portfolio } from '../../types/api'
+import { z } from "zod";
+import { tool } from "ai";
+import type { DemoTradeProAPIClient } from "../../utils/api-client";
+import type { Portfolio } from "../../types/api";
 
 /**
  * Get Portfolio Tool
@@ -11,42 +10,49 @@ import type { Portfolio } from '../../types/api'
 
 // Schema definition
 export const GetPortfolioSchema = z.object({
-  userId: z.string().describe('User ID to fetch portfolio for'),
-  includeHistory: z.boolean().optional().describe('Include historical performance data')
-})
+  includeHistory: z
+    .boolean()
+    .optional()
+    .describe("Include historical performance data"),
+});
 
-export type GetPortfolioParams = z.infer<typeof GetPortfolioSchema>
+export type GetPortfolioParams = z.infer<typeof GetPortfolioSchema>;
 
 // Default handler implementation
-export async function getPortfolioHandler(params: GetPortfolioParams, apiClient: DemoTradeProAPIClient): Promise<Portfolio> {
-  const response = await apiClient.get<Portfolio>('/portfolio')
-  
+export async function getPortfolioHandler(
+  params: GetPortfolioParams,
+  apiClient: DemoTradeProAPIClient
+): Promise<Portfolio> {
+  const response = await apiClient.get<Portfolio>("/portfolio");
   if (!response.success) {
-    throw new Error(response.error?.message || 'Failed to fetch portfolio')
+    throw new Error(response.error?.message || "Failed to fetch portfolio");
   }
-  
-  return response.data!
+
+  return response.data!;
 }
 
 // AI SDK v5 tool factory
 export function createAISDKTool(apiClient: DemoTradeProAPIClient) {
   return tool({
-    description: 'Retrieve user portfolio holdings and performance data - DemoTradePro',
+    description:
+      "Retrieve user portfolio holdings and performance data - DemoTradePro",
     inputSchema: GetPortfolioSchema,
-    execute: async ({ userId, includeHistory }) => getPortfolioHandler({ userId, includeHistory }, apiClient)
-  })
+    execute: async ({ includeHistory }) =>
+      getPortfolioHandler({ includeHistory }, apiClient),
+  });
 }
 
-// MCP tool factory
-export function createMCPTool(apiClient: DemoTradeProAPIClient) {
+// MCP tool meta
+export function getMCPToolMeta() {
   return {
-    name: 'getPortfolio',
-    description: 'Get user portfolio with current positions and values - DemoTradePro',
-    inputSchema: zodToJsonSchema(GetPortfolioSchema),
-    handler: (params: GetPortfolioParams) => getPortfolioHandler(params, apiClient)
-  }
+    name: "getPortfolio",
+    description:
+      "Get user portfolio with current positions and values - DemoTradePro",
+    inputSchema: GetPortfolioSchema.shape,
+    requiredScopes: ["portfolio:read"],
+  };
 }
 
 // Convenience exports
-export const schema = GetPortfolioSchema
-export const defaultHandler = getPortfolioHandler
+export const schema = GetPortfolioSchema;
+export const defaultHandler = getPortfolioHandler;
